@@ -8,3 +8,7 @@ Simple plugin to show geotagged Wikimedia Commons photos on a Leaflet map.
 
 ## Demo
 * https://59de44955ebd.github.io/leaflet.commons/
+
+## Screenshot
+
+![](screenshots/brooklyn.jpg)
