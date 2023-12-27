@@ -6,7 +6,6 @@
 **/
 
 (function(){ if (L.MarkerClusterGroup && L.Photo.Cluster) {
-
 const RE_SPACE = new RegExp(' ', 'g');
 const _replaceSpaces = function(str) {
     return str.replace(RE_SPACE, '_');
@@ -69,7 +68,6 @@ const _md5_hex = function (str) {
 };
 
 L.CommonsPhotos = L.Photo.Cluster.extend({
-
     options: {
         minZoom: 10,
         maxImagesPerRequest: 60,
@@ -77,19 +75,14 @@ L.CommonsPhotos = L.Photo.Cluster.extend({
         imageSize: 640,
         updateMinPixelDistance: 60,
         imageClickClosesPopup: true,
-
-        // MarkerClusterGroup options
-
+        // -- MarkerClusterGroup options
         // The maximum radius that a cluster will cover from the central marker (in pixels).
         maxClusterRadius: 50,
-
         // When you mouse over a cluster it shows the bounds of its markers.
         showCoverageOnHover: true,
-
         // Increase from 1 to increase the distance away from the center that spiderfied markers are placed.
         spiderfyDistanceMultiplier: 2,
     },
-
     initialize: function (options) {
         L.setOptions(this, options);
         L.Photo.Cluster.prototype.initialize.call(this);
@@ -123,18 +116,15 @@ L.CommonsPhotos = L.Photo.Cluster.extend({
         this._prevZoom = -1;
         this._shownall = false;
         this._prevPoint = null;
-        this._totalImages = null;
         // Used to turn off unspiderfying when new photos are added (unfortunately MarkerClusterGroup has no public API for this)
         this.__unspiderfy = this._unspiderfy;
     },
-
     onAdd: function (map) {
         L.Photo.Cluster.prototype.onAdd.call(this, map);
         this._map = map;
         map.on('moveend', this._requestData, this);
         this._requestData();
     },
-
     onRemove: function (map) {
         L.Photo.Cluster.prototype.onRemove.call(this,map);
         map.off('moveend', this._requestData, this);
@@ -143,7 +133,6 @@ L.CommonsPhotos = L.Photo.Cluster.extend({
         this._shownall = false;
         this._prevPoint = null;
     },
-
     _requestData: function () {
         const zoom = this._map.getZoom();
         if (zoom < this.options.minZoom)
@@ -162,9 +151,7 @@ L.CommonsPhotos = L.Photo.Cluster.extend({
             let bounds = this._map.getBounds();
             // if bbox is bigger than wikimedia allows, decrease it
             while (this._map.distance(bounds.getNorthWest(), bounds.getNorthEast()) * this._map.distance(bounds.getNorthWest(), bounds.getSouthWest()) > MAX_BBOX_SQUARE_METERS)
-            {
                 bounds = bounds.pad(-.1);
-            }
             const gsbbox = bounds.getNorth() + '|' +  bounds.getWest() + '|' + bounds.getSouth() + '|' + bounds.getEast();
             this._controller = new AbortController();
             fetch(`https://commons.wikimedia.org/w/api.php?format=json&action=query&list=geosearch&gsprimary=all&gsnamespace=6&gslimit=${this.options.maxImagesPerRequest}&gsbbox=${gsbbox}&origin=*`,
@@ -183,7 +170,6 @@ L.CommonsPhotos = L.Photo.Cluster.extend({
         }
         this._prevZoom = zoom;
     },
-
     _addRows: function(rows) {
         const newRows = [];
         let file, md5;
@@ -207,9 +193,7 @@ L.CommonsPhotos = L.Photo.Cluster.extend({
         this._unspiderfy = this.__unspiderfy;
     }
 });
-
 L.commonsPhotos = function (options) {
     return new L.CommonsPhotos(options);
 };
-
 }})();
