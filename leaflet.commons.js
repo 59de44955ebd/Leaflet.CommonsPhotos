@@ -67,12 +67,14 @@ if (L.MarkerClusterGroup && L.Photo.Cluster) {
             this._done = {};
 
             this.on('click',  (evt) => {
+
                 let img;
                 const popup = L.popup({
                     content: () => {
                         const div = document.createElement('div');
                         img = document.createElement('img');
                         img.src = evt.layer.photo.image;
+                        img.onclick = () => { console.log('CLICK'); this._map.closePopup(); };
                         div.appendChild(img);
                         const p = document.createElement('p');
                         p.innerHTML = `<a href="${evt.layer.photo.link}" target="_blank">${evt.layer.photo.title}</a>`;
@@ -84,7 +86,6 @@ if (L.MarkerClusterGroup && L.Photo.Cluster) {
                     className: 'leaflet-popup-photo',
                     minWidth: this.options.imageSize - 1,
                     closeButton: false,
-                    autoClose: false,
                 });
                 evt.layer.bindPopup(popup).openPopup();
                 img.onload = () => popup._adjustPan();
