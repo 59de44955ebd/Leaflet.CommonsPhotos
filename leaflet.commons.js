@@ -49,14 +49,12 @@ if (L.MarkerClusterGroup && L.Photo.Cluster) {
             // MarkerClusterGroup options
 
             // The maximum radius that a cluster will cover from the central marker (in pixels).
-            // Default 80. Decreasing will make more, smaller clusters.
             maxClusterRadius: 50,
 
             // When you mouse over a cluster it shows the bounds of its markers.
             showCoverageOnHover: true,
 
             // Increase from 1 to increase the distance away from the center that spiderfied markers are placed.
-            // Use if you are using big marker icons (Default: 1).
             spiderfyDistanceMultiplier: 2,
         },
 
@@ -170,7 +168,7 @@ if (L.MarkerClusterGroup && L.Photo.Cluster) {
 
         _addRows: function(rows) {
             const newRows = [];
-            let file, md5, c1, c2;
+            let file, md5;
             for (let row of rows)
             {
                 if (!SUPPORTED_FILE_TYPES.includes(row.title.split('.').pop().toLowerCase()))
