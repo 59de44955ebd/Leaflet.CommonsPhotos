@@ -6,9 +6,11 @@ Simple plugin to show geotagged Wikimedia Commons photos on a Leaflet map.
 * [Leaflet.Photo](https://github.com/turban/Leaflet.Photo/)
 * [Leaflet.markercluster](https://github.com/Leaflet/Leaflet.markercluster/)
 
+## Usage
+See Demo's [index.html](https://github.com/59de44955ebd/59de44955ebd.github.io/blob/main/leaflet.commons/index.html)
+
 ## Demo
 * https://59de44955ebd.github.io/leaflet.commons/
 
 ## Screenshot
-
 ![](screenshots/brooklyn.jpg)
