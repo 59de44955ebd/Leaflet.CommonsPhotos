@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Leaflet.Commons Demo</title>
+<link rel="icon" type="image/ico" href="favicon.ico">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" rel="stylesheet">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+<link href="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/MarkerCluster.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.min.js"></script>
+
+<link href="./leaflet.photo.css" rel="stylesheet">
+<script src="./leaflet.photo.js"></script>
+
+<script src="./../leaflet.commons.js"></script>
+<style>
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+</style>
+</head>
+<body id="map">
+<script>
+'use strict';
+let zoom, lat, lng;
+const parts = window.location.hash.substr(1).split('/');
+if (parts.length > 2)
+{
+    zoom = parseInt(parts[0]), lat = parseFloat(parts[1]), lng = parseFloat(parts[2]);
+}
+else
+{
+    zoom = 17, lat = 52.51859731619241, lng = 13.453123569488527;
+    window.location.hash = `${zoom}/${lat}/${lng}`;
+}
+const map = L.map('map', {
+    layers: [
+        L.tileLayer(
+            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            {
+                subdomains:['a', 'b', 'c'],
+                maxNativeZoom: 19,
+                maxZoom: 20,
+                attribution: '© <a href="https://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            }
+        ),
+        L.commonsPhotos(),
+    ],
+    minZoom: 5,
+    maxZoom: 20,
+})
+.setView([lat, lng], zoom)
+.on('moveend', function(evt) {
+    const p = this.getCenter();
+    window.location.hash = `${this.getZoom()}/${p.lat}/${p.lng}`;
+});
+</script>
+</body>
+</html>
