@@ -17,8 +17,7 @@ const MAX_BBOX_SQUARE_METERS = 400000000;
 const hs = [...Array(16)].map((_, i) => i.toString(16));
 const hex2s = (hs.join("") + hs.reverse().join("")).match(/../g);
 const H = new Uint32Array(Uint8Array.from(hex2s, v => parseInt(v, 16)).buffer);
-const K = Uint32Array.from(
-    Array(64), (_, i) => Math.floor(Math.abs(Math.sin(i + 1)) * (2 ** 32)));
+const K = Uint32Array.from(Array(64), (_, i) => Math.floor(Math.abs(Math.sin(i + 1)) * (2 ** 32)));
 const S = [[7, 12, 17, 22], [5, 9, 14, 20], [4, 11, 16, 23], [6, 10, 15, 21]];
 const F = [
     (b, c, d) => ((b & c) | ((~b >>> 0) & d)) >>> 0,
@@ -70,7 +69,7 @@ const _md5_hex = function (str) {
 L.CommonsPhotos = L.Photo.Cluster.extend({
     options: {
         minZoom: 10,
-        maxImagesPerRequest: 60,
+        maxImagesPerRequest: 250, // max. supported number is 500
         thumbSize: 100,
         imageSize: 640,
         updateMinPixelDistance: 60,
