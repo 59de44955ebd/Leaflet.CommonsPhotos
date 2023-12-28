@@ -10,7 +10,6 @@ const RE_SPACE = new RegExp(' ', 'g');
 const _replaceSpaces = function(str) {
     return str.replace(RE_SPACE, '_');
 };
-const SUPPORTED_FILE_TYPES = ['jpg', 'jpeg', 'png'];
 const MAX_BBOX_SQUARE_METERS = 400000000;
 
 // MD5 stuff
@@ -69,11 +68,15 @@ const _md5_hex = function (str) {
 L.CommonsPhotos = L.Photo.Cluster.extend({
     options: {
         minZoom: 10,
-        maxImagesPerRequest: 250, // max. supported number is 500
         thumbSize: 100,
         imageSize: 640,
         updateMinPixelDistance: 60,
         imageClickClosesPopup: true,
+        // Max. supported number is 500
+        maxImagesPerRequest: 250,
+        // .jpg and .png images only, ignore ISS astro footage
+        filterRegex: /^(?!file:iss)(.*)(.png|.jpg|.jpeg)$/gi,
+
         // -- MarkerClusterGroup options
         // The maximum radius that a cluster will cover from the central marker (in pixels).
         maxClusterRadius: 50,
@@ -93,7 +96,6 @@ L.CommonsPhotos = L.Photo.Cluster.extend({
                     const div = document.createElement('div');
                     img = document.createElement('img');
                     img.src = evt.layer.photo.image;
-                    img.onclick = () => { console.log('CLICK'); this._map.closePopup(); };
                     div.appendChild(img);
                     const p = document.createElement('p');
                     p.innerHTML = `<a href="${evt.layer.photo.link}" target="_blank">${evt.layer.photo.title}</a>`;
@@ -174,8 +176,8 @@ L.CommonsPhotos = L.Photo.Cluster.extend({
         let file, md5;
         for (let row of rows)
         {
-            if (!SUPPORTED_FILE_TYPES.includes(row.title.split('.').pop().toLowerCase()))
-                continue;
+            if (this.options.filterRegex && !this.options.filterRegex.test(row.title))
+            	continue;
             if (!this._done[row.pageid])
             {
                 file = _replaceSpaces(row.title.substr(5));
